@@ -1,0 +1,763 @@
+Konrad Bialek
+Przetwarzanie obrazow 1
+05.12.2018r.
+
+Przy tworzeniu funkcji konturowania wybralem opcje zwiekszenia skali szarosci
+obrazu dwukrotnie, zeby nie stracic informacji o szarosci czesci pikseli
+oryginalnego obrazu.
+
+Do liczenia szarosci nowych pikseli w tej funkcji uzylem dodatkowej tablicy i
+czterech wzorow w zaleznosci od polozenia piksela w obrazie, zeby nie zmieniac
+wymiarow obrazu.
+
+Przy tworzeniu funkcji zapisu wybralem opcje tworzenia linii zapisu obrazu z 17
+liczbami, zeby nie przekroczyc ograniczenia 70 znakow w jednej linii.
+
+W funkcji czytaj dodalem warunek sprawdzajacy, czy wymiary wczytywanego obrazu
+zmieszcza sie w tablicy przechowujacej wczytywany obraz.
+
+Przy wprowadzaniu nazwy pliku do odczytu lub zapisu program prosi uzytkownika
+o podanie nazwy pliku bez rozszerzenia .pgm i taka nazwe nalezy mu podac.
+
+Testy programu:
+
+Menu programu: Wybierz operacje:
+     	       	  1 - Odczytaj obraz
+   		  2 - Modyfikuj - Negatyw
+   		  3 - Modyfikuj - Progowanie
+   		  4 - Modyfikuj - Konturowanie
+   		  5 - Zapisz obraz do pliku pod nowa nazwa
+   		  6 - Wyswietl obraz przed zmianami
+   		  7 - Wyswietl ostatnio zapisany obraz
+  		  8 - Zakoncz dzialanie programu
+	       Twoj wybor: 
+
+W dokumentacji testow jest tylko ostatnia linia menu, zeby nie powtarzac calego
+menu.
+
+Zawartosc pliku obrazek.pgm:  
+P2                            
+# obrazek.pgm                       
+4 3                           
+2                             
+0 2 0 2 0 0 2 1 1 1 1 2       
+
+Zawartosc pliku duzy.pgm:
+P2
+# duzy.pgm
+4 5
+3
+3 0 2 1 0 3 1 2 0 0 0 1 2 3 2 3 2 1 1 0
+
+
+Pliki obrazek.pgm i duzy.pgm za ostatnia wartoscia maja pusta linie, zeby
+zostaly wyswietlone bez osrzezen przez program "display".
+
+Test 1.: Sprawdzenie, czy program odczytuje poprawnie wskazane pliki
+     	 o odpowiednim formacie i zawartosci znajdujace sie w katalogu
+	 z programem, zapisuje je w odpowiedni sposob zachowujac format
+	 i zawartosc (poza komentarzami), zmienia komentarze, wyswietla obrazy
+	 oraz konczy program.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 obrazek
+
+	 Twoj wybor: 5
+	 Uwaga! Jezeli podasz nazwe pliku, ktory juz istnieje, to zostanie on
+	 zastapiony.
+	 Podaj nazwe nowego pliku bez rozszerzenia .pgm:
+	 nowy
+	 Obraz zostal zapisany pomyslnie.
+
+	 Twoj wybor: 6
+	 display obrazek.pgm &
+
+	 Twoj wybor: 7
+	 display nowy.pgm &
+
+	 Twoj wybor: 8
+	 
+	 Spodziewany efekt:
+	 Utworzenie nowego pliku o nazwie podanej przy zapisie i rozszerzeniu
+	 .pgm, ktory rozni sie od pliku oryginalnego tylko komentarzami (ma tez
+	 pusta linie na koncu); w komentarzach zawiera informacje o oryginalnym
+	 pliku, wykonanych modyfikacjach (w tym przypadku braku modyfikacji)
+	 i nazwie tego pliku, wyswietlenie obu obrazow oraz otrzymanie
+	 komunikatu o zakonczeniu dzialania
+	 programu i zakonczenie programu.
+	 
+	 Otrzymany wynik:
+	 Wyswietlenie obu obrazow za pomoca programu "display".
+	 Komunikat konczacy program: Koniec dzialania programu.
+	 Zawartosc nowego pliku nowy.pgm:
+	 P2
+	 # Nazwa oryginalnego pliku: obrazek.pgm
+	 # Wykonane modyfikacje: brak
+	 # Nazwa tego pliku: nowy.pgm
+	 4 3
+	 2
+	    0   2   0   2   0   0   2   1   1   1   1   2
+	 
+	 	 
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla obrazow o wymiarach kazdy nie wiekszy
+	 niz 512 pikseli.
+
+Test 2.: Sprawdzenie przypadku wprowadzenia warosci innej niz liczba w pole
+     	 wyboru.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: r
+
+	 Spodziewany efekt:
+	 Wyswietlenie komunikatu o wprowadzonej wartosci innej niz liczba oraz
+	 menu z mozliwoscia ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 To nie jest liczba! Wprowadz liczbe.
+
+	 Twoj wybor:
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla kilku znakow innych niz liczby i znak
+	 ' ' wpisanych jeden po drugim (np. "qwerty").
+
+Test 3.: Sprawdzenie przypadku wprowadzenia kilku warosci innych niz liczba
+     	 w pole wyboru oddzielonych znakiem ' '.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: qwert yuiop
+
+	 Spodziewany efekt:
+	 Dwukrotne wyswietlenie komunikatu o wprowadzonej wartosci innej niz
+	 liczba oraz menu z mozliwoscia ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 To nie jest liczba! Wprowadz liczbe.
+
+	 Twoj wybor: To nie jest liczba! Wprowadz liczbe.
+
+	 Twoj wybor:
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Wniosek testu:
+	 Program traktuje znak ' ' jako separator argumentow, a wprowadzone
+	 wartosci jako kilka argumentow i wykonuje petle tyle razy, ile jest
+	 argumentow, za kazdym razem dla kolejnego argumentu.
+
+Test 4.: Sprawdzenie przypadku proby odczytu pliku, ktorego nie ma w katalogu
+     	 z programem lub ktory nie istnieje.
+
+	 Wprowadzenie danych:
+	 
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 obrazek123
+
+	 Spodziewany efekt:
+	 Wyswietlenie komunikatu o braku uchwytu do pliku oraz menu z
+	 mozliwoscia ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 Blad: Nie podano uchwytu do pliku.
+
+	 Twoj wybor: 
+
+	 Rezultat testu zgodny z przewidywaniami.
+
+Test 5.: Sprawdzenie przypadku proby odczytu pliku bez "numeru magicznego"
+     	 "P2".
+
+	 Zmiana pierwszej linii pliku obrazek.pgm z "P2" na pusta linie.
+	 
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 1
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 obrazek
+
+	 Spodziewany efekt:
+	 Wyswietlenie komunikatu o tym, ze to nie jest plik PGM oraz menu
+	 z mozliwoscia ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 Blad: To nie jest plik PGM
+
+	 Twoj wybor:
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla dowolnych wartosci innych niz "P2".
+
+Test 6.: Sprawdzenie przypadku proby odczytu pliku bez podanych wymiarow lub
+     	 liczby stopni szarosci.
+
+	 Usuniecie z pliku obrazek.pgm prawie wszystkich liczb znajdujacych sie
+	 za linia komentarza - pozostawienie tam dwoch liczb.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 obrazek
+
+	 Spodziewany efekt:
+	 Wyswietlenie komunikatu o braku wymiarow obrazu lub liczby stopni
+	 szarosci oraz menu z mozliwoscia ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 Blad: Brak wymiarow obrazu lub liczby stopni szarosci
+
+	 Twoj wybor:
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla pozostawienia jednej liczby za linia
+	 komentarza, braku liczb lub wpisania tam wartosci innych niz liczby
+	 (w dowolnej ilosci).
+
+Test 7.: Sprawdzenie, czy program odczytuje poprawnie wskazane pliki   
+	 o odpowiednim formacie i zawartosci, ktore maja co najmniej 1 wymiar
+	 wiekszy niz 512 pikseli.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 Claudia2
+
+	 Spodziewany efekt:
+	 Wyswietlenie komunikatu o zbyt duzych wymiarach obrazu oraz menu
+	 z mozliwoscia ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 Blad: Zbyt duze wymiary obrazu.
+
+	 Twoj wybor: 
+	 
+	 Rezultat testu zgodny z przewidywaniami.
+
+Test 8.: Sprawdzenie przypadku proby odczytu pliku z niewlasciwymi wymiarami
+     	 obrazu.
+
+	 Usuniecie z pliku obrazek.pgm co najmniej jednej liczby z linii pliku
+	 odpowiadajacych pikselom obrazu.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 obrazek
+
+	 Spodziewany efekt:
+	 Wyswietlenie komunikatu o niewlasciwych wymiarach obrazu oraz menu
+	 z mozliwoscia ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 Blad: Niewlasciwe wymiary obrazu
+	 
+         Twoj wybor:
+
+         Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla usuniecia dowolnej liczby liczb z linii
+	 pliku odpowiadajacych pikselom obrazu i dla obrazow o wymiarach kazdy
+	 nie wiekszy niz 512 pikseli.
+
+Test 9.: Sprawdzenie przypadku proby modyfikacji negatywu bez wskazania pliku
+     	 z obrazem do modyfikacji.
+	 
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 2
+
+	 Spodziewany efekt:
+	 Wyswietlenie komunikatu o braku obrazu w pamieci i polecenia do
+	 uzytkownika, aby najpierw odczytal obraz oraz menu z mozliwoscia
+	 ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 Brak obrazu w pamieci. Najpierw odczytaj obraz.
+
+	 Twoj wybor:
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla proby modyfikacji progowania (wybor 3),
+	 modyfikacji konturowania (wybor 4), zapisu (wybor 5), wyswietlenia
+	 oryginalnego obrazu (wybor 6) bez wskazania (i odczytania) pliku
+	 z obrazem oryginalnym.
+
+Test 10.: Sprawdzenie przypadku proby wyswietlenia zapisanego obrazu bez
+     	 zapisania obrazu do pliku.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 7
+
+	 Spodziewany efekt:
+	 Wyswietlenie komunikatu o braku zapisanego obrazu i polecenia do
+	 uzytkownika, aby najpierw zapisal obraz oraz menu z mozliwoscia
+	 ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 Brak zapisanego obrazu. Najpierw zapisz obraz.
+
+	 Twoj wybor:
+
+	 Rezultat testu zgodny z przewidywaniami.
+
+Test 11.: Sprawdzenie przypadku wprowadzenia liczby innej niz podane w menu.
+
+     	 Wprowadzenie danych:
+
+	 Twoj wybor: 23
+
+	 Spodziewany efekt:
+	 Wyswietlenie komunikatu o braku wybranej pozycji i polecenia do
+	 uzytkownika, aby wybral jeszcze raz oraz menu z mozliwoscia ponownego
+	 wyboru operacji.
+
+         Otrzymany wynik:
+         Nie ma takiej pozycji. Wybierz jeszcze raz.
+	 
+         Twoj wybor:
+
+         Rezultat testu zgodny z przewidywaniami.
+
+Test 12.: Sprawdzenie przypadku wprowadzenia kilku liczb oddzielonych znakiem
+     	 ' '.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 3 34 2
+
+	 Spodziewany efekt:
+	 Wyswietlenie komunikatu o braku obrazu w pamieci (dla modyfikacji
+	 progowania), menu i komunikatu o braku wybranej pozycji, menu
+	 i komunikatu o braku obrazu w pamieci (dla modyfikacji negatywu)
+	 i ponownym wyswietleniu menu z mozliwoscia ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 Brak obrazu w pamieci. Najpierw odczytaj obraz.
+	 Twoj wybor: Nie ma takiej pozycji. Wybierz jeszcze raz.
+	 Twoj wybor: Brak obrazu w pamieci. Najpierw odczytaj obraz.
+	 Twoj wybor:
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Wniosek testu:
+	 Zgodnie z wnioskiem testu 3. program traktuje znak ' ' jako separator
+	 argumentow.
+
+Test 13.: Sprawdzenie przypadku wprowadzenia wszystkich potrzebnych argumentow
+     	 oddzielajac je znakiem ' '.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 1 obrazek 3 50 5 prog50 6 7 8
+
+	 Spodziewany efekt:
+	 Wyswietlenie odpowiednich komunikatow dla argumentow, odpowiedniej
+	 liczby menu, wyswietlenie obrazow za pomoca programu "display"
+	 i zakonczenie dzialania programu.
+	 
+	 Otrzymany wynik:
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 Twoj wybor: Podaj wartosc progu w procentach: Wykonano modyfikacje:
+	 Progowanie.
+	 Twoj wybor: Uwaga! Jezeli podasz nazwe pliku, ktory juz istnieje, to
+	 zostanie on zastapiony.
+	 Podaj nazwe nowego pliku bez rozszerzenia .pgm:
+	 Obraz zostal zapisany pomyslnie.
+	 Twoj wybor: display obrazek.pgm &
+	 Twoj wybor: display prog50.pgm &
+	 Twoj wybor: Koniec dzialania programu.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla odpowiednich argumentow wprowadzanych
+	 w odpowiedniej kolejnosci i dla obrazow o wymiarach kazdy nie wiekszy
+	 niz 512 pikseli.
+
+Test 14.: Sprawdzenie przypadku wykonania w kolejnosci modyfikacji negatywu
+     	 na odczytanym obrazie, zapisu nowego obrazu do pliku, wyswietlenia
+	 oryginalnego obrazu i wyswietlenia nowego obrazu.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 obrazek
+
+	 Twoj wybor: 2
+	 Wykonano modyfikacje: Negatyw.
+
+	 Twoj wybor: 5
+	 Uwaga! Jezeli podasz nazwe pliku, ktory juz istnieje, to zostanie on
+	 zastapiony.
+	 Podaj nazwe nowego pliku bez rozszerzenia .pgm:
+	 negatyw
+	 Obraz zostal zapisany pomyslnie.
+
+	 Twoj wybor: 6
+	 display obrazek.pgm &
+
+	 Twoj wybor: 7
+
+	 Spodziewany efekt:
+	 Utworzenie nowego pliku o nazwie podanej przy zapisie i rozszerzeniu
+	 .pgm, ktory rozni sie od pliku oryginalnego komentarzami zawierajacymi
+	 nazwe oryginalnego pliku, wykonanych modyfikacjach (w tym przypadku
+	 negatyw) i nazwie tego pliku i odpowiednio zmodyfikowanym obrazem,
+	 wyswietlenie obu obrazow (przed i po modyfikacji), wyswietlenie
+	 wydruku polecenia wyswietlenia zapisanego obrazu i menu z mozliwoscia
+	 ponownego wyboru operacji. 
+
+	 Otrzymany wynik:
+	 Wyswietlenie obu obrazow za pomoca programu "display".
+
+	 Wyswietlenie na ekranie terminala:
+	 display negatyw.pgm &
+
+	 Twoj wybor:
+	 
+	 Zawartosc nowego pliku negatyw.pgm:
+	 P2
+	 # Nazwa oryginalnego pliku: obrazek.pgm
+	 # Wykonane modyfikacje: negatyw;
+	 # Nazwa tego pliku: negatyw.pgm
+	 4 3
+	 2
+	    2   0   2   0   2   2   0   1   1   1   1   0
+
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla obrazow o wymiarach kazdy nie wiekszy
+	 niz 512 pikseli.
+
+Test 15.: Sprawdzenie przypadku wykonania w kolejnosci modyfikacji progowania
+     	 z progiem 50% na odczytanym obrazie, zapisu nowego obrazu do pliku,
+	 wyswietlenia oryginalnego obrazu i wyswietlenia nowego obrazu.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 obrazek
+
+	 Twoj wybor: 3
+	 Podaj wartosc progu w procentach (od 0 do 100): 50
+	 Wykonano modyfikacje: Progowanie.
+
+	 Twoj wybor: 5
+	 Uwaga! Jezeli podasz nazwe pliku, ktory juz istnieje, to zostanie on
+	 zastapiony.
+	 Podaj nazwe nowego pliku bez rozszerzenia .pgm:
+	 prog50
+	 Obraz zostal zapisany pomyslnie.
+
+	 Twoj wybor: 6
+	 display obrazek.pgm &
+
+	 Twoj wybor: 7
+
+	 Spodziewany efekt:
+	 Utworzenie nowego pliku o nazwie podanej przy zapisie i rozszerzeniu
+	 .pgm, ktory rozni sie od pliku oryginalnego komentarzami zawierajacymi
+	 nazwe oryginalnego pliku, wykonanych modyfikacjach (w tym przypadku
+	 progowanie) i nazwie tego pliku i odpowiednio zmodyfikowanym obrazem,
+	 wyswietlenie obu obrazow (przed i po modyfikacji), wyswietlenie
+	 wydruku polecenia wyswietlenia zapisanego obrazu i menu z mozliwoscia
+	 ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 Wyswietlenie obu obrazow za pomoca programu "display".
+
+	 Wyswietlenie na ekranie terminala:
+	 display prog50.pgm &
+
+	 Twoj wybor:
+	 
+	 Zawartosc nowego pliku prog50.pgm:
+	 P2
+	 # Nazwa oryginalnego pliku: obrazek.pgm
+	 # Wykonane modyfikacje: progowanie;
+	 # Nazwa tego pliku: prog50.pgm
+	 4 3
+	 2
+	    0   2   0   2   0   0   2   0   0   0   0   2
+
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla obrazow o wymiarach kazdy nie wiekszy
+	 niz 512 pikseli i progow innych niz 50%, ale tylko od 0 do 100%.
+
+Test 16.: Sprawdzenie przypadku prob wykonania modyfikacji progowania
+     	 z niewlasciwym progiem na odczytanym obrazie.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 obrazek
+
+	 Twoj wybor: 3
+	 Podaj wartosc progu w procentach (od 0 do 100): 123
+	 Niewlasciwy prog. Podaj wartosc progu jeszcze raz: -20
+	 Niewlasciwy prog. Podaj wartosc progu jeszcze raz: 12
+
+	 Spodziewany efekt:
+	 Wyswietlanie komunikatu o niewlasciwym progu do momentu wprowadzenia
+	 odpowiedniej liczby (na przyklad 12), nastepnie wyswietlenie
+	 komunikatu o wykonanej modyfikacji i menu zmozliwoscia ponownego
+	 wyboru operacji.
+
+	 Otrzymany wynik:
+	 Niewlasciwy prog. Podaj wartosc progu jeszcze raz: -20
+	 Niewlasciwy prog. Podaj wartosc progu jeszcze raz: 12
+	 Wykonano modyfikacje: Progowanie.
+
+	 Twoj wybor: 
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla obrazow o wymiarach kazdy nie wiekszy
+	 niz 512 pikseli.
+
+Test 17.: Sprawdzenie przypadku wykonania w kolejnosci modyfikacji konturowania
+     	 na odczytanym obrazie, zapisu nowego obrazu do pliku, wyswietlenia
+	 oryginalnego obrazu i wyswietlenia nowego obrazu.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 obrazek
+
+	 Twoj wybor: 4
+	 Wykonano modyfikacje: Konturowanie.
+
+	 Twoj wybor: 5
+	 Uwaga! Jezeli podasz nazwe pliku, ktory juz istnieje, to zostanie on
+	 zastapiony.
+	 Podaj nazwe nowego pliku bez rozszerzenia .pgm:
+	 konturowanie
+	 Obraz zostal zapisany pomyslnie.
+
+	 Twoj wybor: 6
+	 display obrazek.pgm &
+
+	 Twoj wybor: 7
+
+	 Spodziewany efekt:
+	 Utworzenie nowego pliku o nazwie podanej przy zapisie i rozszerzeniu
+	 .pgm, ktory rozni sie od pliku oryginalnego komentarzami zawierajacymi
+	 nazwe oryginalnego pliku, wykonanych modyfikacjach (w tym przypadku
+	 konturowanie) i nazwie tego pliku i odpowiednio zmodyfikowanym
+	 obrazem, wyswietlenie obu obrazow (przed i po modyfikacji),
+	 wyswietlenie wydruku polecenia wyswietlenia zapisanego obrazu i menu
+	 z mozliwoscia ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 Wyswietlenie obu obrazow za pomoca programu "display".
+
+	 Wyswietlenie na ekranie terminala:
+	 display konturowanie.pgm &
+
+	 Twoj wybor:
+	 
+	 Zawartosc nowego pliku konturowanie.pgm:
+	 P2
+	 # Nazwa oryginalnego pliku: obrazek.pgm
+	 # Wykonane modyfikacje: konturowanie;
+	 # Nazwa tego pliku: konturowanie.pgm
+	 4 3
+	 4
+	    2   4   4   3   1   3   2   2   1   1   2   2
+
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla obrazow o wymiarach kazdy nie wiekszy
+	 niz 512 pikseli.
+	 
+Test 18.: Sprawdzenie przypadku odczytania obrazu po tym, gdy inny obraz zostal
+     	 wczesniej wczytany do pamieci.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 obrazek
+
+	 Twoj wybor: 6
+	 display obrazek.pgm &
+
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 duzy
+
+	 Twoj wybor: 6
+
+	 Spodziewany efekt:
+	 Wyswietlenie obu obrazow i wyswietlenie wydruku kontrolnego polecenia
+	 wyswietlenia ostatniego odczytanego obrazu ("duzy.pgm") i menu
+	 z mozliwoscia ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+	 Wyswietlenie obu obrazow za pomoca programu "display".
+
+	 Wyswietlenie na ekranie terminala:
+	 display duzy.pgm &
+
+	 Twoj wybor:
+
+	 Obraz wczytany wczesniej nie ma wplywu na prace z aktualnie wczytanym
+	 obrazem.
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla obrazow o wymiarach kazdy nie wiekszy
+	 niz 512 pikseli.	 
+
+Test 19.: Sprawdzenie przypadku zapisu obrazu o ilosci piseli wiekszej niz 17.
+
+     	 Wprowadzenie danych:
+
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 duzy
+
+	 Twoj wybor: 5
+	 Uwaga! Jezeli podasz nazwe pliku, ktory juz istnieje, to zostanie on
+	 zastapiony.
+	 Podaj nazwe nowego pliku bez rozszerzenia .pgm:
+	 nowy
+	 Obraz zostal zapisany pomyslnie.
+
+	 Twoj wybor: 7
+	 
+	 Spodziewany efekt:
+	 Utworzenie nowego pliku o nazwie podanej przy zapisie i rozszerzeniu
+	 .pgm z odpowiedia zawartoscia. Wyswietlenie wydruku kontrolnego
+	 polecenia wyswietlenia ostatniego zapisanego obrazu i menu
+	 z mozliwoscia ponownego wyboru operacji. 
+
+	 Otrzymany wynik:
+	 display nowy.pgm &
+	 
+	 Twoj wybor:
+
+	 Zawartosc nowego pliku nowy.pgm:
+	 P2
+	 # Nazwa oryginalnego pliku: duzy.pgm
+	 # Wykonane modyfikacje: brak
+	 # Nazwa tego pliku: nowy.pgm
+	 4 5
+	 3
+	    3   0   2   1   0   3   1   2   0   0   0   1   2   3   2   3   2
+            1   1   0
+	    
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla obrazow o wymiarach kazdy nie wiekszy
+	 niz 512 pikseli.
+	 
+Test 20.: Sprawdzenie przypadku wykonania kilku modyfikacji na wczytanym
+     	 obrazie i zapisania powstalego obrazu pod nazwa pliku (z rozszerzeniem
+	 .pgm), ktory juz istnieje.
+
+	 Wprowadzenie danych:
+
+	 Twoj wybor: 1
+	 Odczytywanie obrazu.
+	 Odczytywany obraz nie moze przekraczac wymiarow 512x512 pikseli.
+	 Podaj nazwe pliku bez rozszerzenia .pgm:
+	 obrazek
+
+	 Twoj wybor: 5
+	 Uwaga! Jezeli podasz nazwe pliku, ktory juz istnieje, to zostanie on
+	 zastapiony.
+	 Podaj nazwe nowego pliku bez rozszerzenia .pgm:
+	 nowy
+	 Obraz zostal zapisany pomyslnie.
+
+	 Twoj wybor: 2
+	 Wykonano modyfikacje: Negatyw.
+
+	 Twoj wybor: 4
+	 Wykonano modyfikacje: Konturowanie.
+
+	 Twoj wybor: 3
+	 Podaj wartosc progu w procentach (od 0 do 100): 30
+	 Wykonano modyfikacje: Progowanie.
+
+	 Twoj wybor: 5
+	 Uwaga! Jezeli podasz nazwe pliku, ktory juz istnieje, to zostanie on
+	 zastapiony.
+	 Podaj nazwe nowego pliku bez rozszerzenia .pgm:
+	 nowy
+	 Obraz zostal zapisany pomyslnie.
+
+	 Spodziewany efekt:
+	 Zmiana zawartosci pliku o nazwie podanej przy ostatnim zapisie
+	 i rozszerzeniu .pgm na obraz znajdujacy sie w tabeli (i informacje
+	 o nim) oraz wyswietlenie komunikatu o poprawnym zapisaniu obrazu
+	 i menu z mozliwoscia ponownego wyboru operacji.
+
+	 Otrzymany wynik:
+
+	 Zawrtosc nowego pliku nowy.pgm (bez modyfikacji):
+	 P2
+	 # Nazwa oryginalnego pliku: obrazek.pgm
+	 # Wykonane modyfikacje: brak
+	 # Nazwa tego pliku: nowy.pgm
+	 4 3
+	 2
+	    0   2   0   2   0   0   2   1   1   1   1   2
+
+	 Zawartosc pliku nowy.pgm (po modyfikacjach):
+	 P2
+	 # Nazwa oryginalnego pliku: obrazek.pgm
+	 # Wykonane modyfikacje: negatyw; konturowanie; progowanie;
+	 # Nazwa tego pliku: nowy.pgm
+	 4 3
+	 4
+	    4   4   4   4   0   4   4   4   0   0   4   4
+
+	 Wyswietlenie na ekranie terminala:
+	 Obraz zostal zapisany pomyslnie.
+
+	 Twoj wybor:
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Test da podobne rezultaty dla obrazow o wymiarach kazdy nie wiekszy
+	 niz 512 pikseli.
+
+Funkcja wyswietlajaca obraz za pomoca programu "display" zostala wywolana
+w czesci przeprowadzonych testow i dzialala prawidlowo, wiec nie ma potrzeby
+przeprowadzania osobnych testow tej funkcji.
+
+Wniosek: Program dziala poprawnie dla wszystkich przypadkow.

@@ -1,0 +1,318 @@
+Konrad Bialek
+Kalkulator RPN
+03.02.2019r.
+
+Zgodnie z Formularzem oceny kalkulatora RPN do pozycji Sprawozdanie dolaczylem
+pusty plik.
+
+Jako funkcje stosu, ktore mialy znalezc sie w osobnym module rozumiem 5 funkcji
+podanych na poczatku zajec: print (wyswietl stos), inicjuj, empty (czy stos
+jest pusty), push (dodaj na poczatek) i pop (usun z poczatku). Pozostale
+funkcje (zarowno dzialania arytmetyczne jak i wiekszosc dodatkowych operacji
+kalkulatora) rozumiem jako czesc glowna programu.
+
+Korzystajac z programu nie mozna wprowadzac do niego liczb ujemnych, poniewaz
+program nie jest do tego przystosowany.
+
+Testy programu:
+
+Test 1.: Sprawdzenie, czy program rozpoznaje cyfry i znaki operacji wprowadza
+     	 podane liczby na stos, prawidlowo wykonuje dzialania arytmetyczne na
+	 tych liczbach, wyswietla zawartosc stosu i konczy prace po
+	 wprowadzeniu znaku 'q'.
+
+	 Wprowadzenie danych:
+	 ./a.out
+	 2 3 15 + * f 10 / 14 - f q
+
+	 Spodziewany efekt:
+	 Program rozpozna cyfry i znaki, wprowadzi pierwsze trzy wartosci na
+	 stos, doda wartosci 3 i 15, co da 18, a nastepnie pomnozy wartosci 2 i
+	 18, co da 36 i wyswietli otrzymana wartosc jako jedyny element stosu.
+	 Nastepnie wprowadzi wartosc 10 podzieli 36 przez 10, co da 3 i od 3
+	 odjac 14, co da -11 i ponownie wyswietli otrzymana wartosc jako jedyny
+	 element stosu. Po tym zakonczy dzialanie.
+
+	 Otrzmany wynik:
+	 36
+	 -11
+	 
+	 Rezultat testu zgodny z przewidywaniami (program zakonczyl dzialanie).
+	 Program bedzie poprawnie wykonywal obliczenia dla innych kombinacji
+	 co najmniej dwoch dodatnich liczb wejsciowych i dzialan
+	 arytmetycznych.
+
+Test 2.: Sprawdzenie, czy program poprawnie duplikuje wartosc ze szczytu stosu,
+     	 gdy stos nie jest pusty, drukuje caly stos i czeka na dzialanie
+	 uzytkownika, gdy ten nie wprowadzi znaku q.
+
+	 Wprowadzenie danych:
+	 ./a.out
+	 23 14 11 f d f
+
+	 Spodziewany efekt:
+	 Wyswietlenie calej zawartosci stosu (trzech elementow w odpowiedniej
+	 kolejnosci) przed zduplikowaniem ostatniego elementu i po tej
+	 operacji.
+
+	 Otrzymany wynik:
+	 11
+	 14
+	 23
+	 11
+	 11
+	 14
+	 23
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala poprawnie dla innych kombinacji danych wejsciowych z
+	 operacja duplikacji, pod warunkiem poprawnosci asercji. Ponadto do
+	 wprowadzenia znaku 'q' do danych wejsciowych po kazdym wykonanym
+	 ciagu operacji bedzie czekal na dzialanie uzytkownika.
+
+Test 3.: Sprawdzenie wywolania operacji duplikacji, gdy stos jest pusty.
+
+     	 Wprowadzenie danych:
+	 ./a.out
+	 d
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o braku wymaganej ilosci argumentow na
+	 stosie.
+
+	 Otrzymany wynik:
+	 Blad asercji: funkcja duplikuj.
+	 Do operacji duplikacji potrzebny jest 1 argument.
+	 Na stosie jest 0 argumentow.
+
+	 Rezultat testu zgodny z przewidywaniami.
+
+Test 4.: Sprawdzenie, czy program poprawnie zamienia miejscami wartosci ze
+     	 szczytu stosu, gdy stos nie jest pusty.
+
+	 Wprowadzenie danych:
+	 ./a.out
+	 27 12 84 f r f
+
+	 Spodziewany efekt:
+	 Wyswietlenie zawartosci stosu (trzech elementow w odpowiedniej
+	 kolejnosci) przed zamiana miejscami dwoch ostatnich elementow i po tej
+	 operacji.
+
+	 Otrzymany wynik:
+	 84
+	 12
+	 27
+	 12
+	 84
+	 27
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala poprawnie dla innych kombinacji danych wejsciowych z
+	 operacja zamiany miejscami, pod warunkiem poprawnosci asercji.
+
+Test 5.: Sprawdzenie wywolania operacji zamiany miejscami, gdy stos jest pusty.
+
+     	 Wprowadzenie danych:
+	 ./a.out
+	 r
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o braku wymaganej ilosci argumentow na
+	 stosie.
+
+	 Otrzymany wynik:
+	 Blad asercji: funkcja zamiana.
+	 Do operacji zamiany argumentow potrzebne sa 2 argumenty.
+	 Na stosie jest 0 argumentow.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Podobny komunikat pojawi sie, gdy na stosie bedzie tylko 1 argument.
+	 Wtedy ostatnim zdaniem komunikatu zamiast "Na stosie jest 0
+	 argumentow." bedzie "Na stosie jest 1 argument.".
+
+Test 6.: Sprawdzenie, czy program poprawnie drukuje szczyt stosu, gdy stos nie
+     	 jest pusty.
+
+	 Wprowadzenie danch:
+	 ./a.out
+	 12 34 67 + p
+
+	 Spodziewany efekt:
+	 Zsumowanie dwoch elementow na szczycie stosu, wlozenie powstalego
+	 elementu na stos (po usunieciu skladnikow sumy) i wyswietlenie jedynie
+	 szczytu dwuelementowego stosu.
+
+	 Otrzymany wynik:
+	 101
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala poprawnie dla innych kombinacji danych wejsciowych z
+	 operacja drukowania szczytu, pod warunkiem poprawnosci asercji.
+
+Test 7.: Sprawdzenie wywolania operacji drukowania szczytu stosu, gdy stos jest
+     	 pusty.
+
+	 Wprowadzenie danych:
+	 ./a.out
+	 p
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o braku wymaganej ilosci argumentow na
+	 stosie.
+
+	 Otrzymany wynik:
+	 Blad asercji: funkcja drukuj_szczyt.
+	 Do operacji drukowania szczytu potrzebny jest 1 argument.
+	 Na stosie jest 0 argumentow.
+
+         Rezultat testu zgodny z przewidywaniami.
+
+Test 8.: Sprawdzenie wywolania operacji czyszczenia stosu, laczenia symboli
+     	 operacji w ciag znakow i wydruku pustego stosu.
+
+     	 Wprowadzenie danych:
+	 ./a.out
+	 12 67 657 546 fcf
+
+	 Spodziewany efekt:
+	 Wyswietlenie zawartosci stosu, wyczyszczenie stosu i wyswietlenie
+	 informacji, ze stos jest pusty. Wszystko to mimo faktu, ze wywolania
+	 operacji nie zostaly oddzielone bialymi znakami.
+
+	 Otrzymany wynik:
+	 546
+	 657
+	 67
+	 12
+	 Stos jest pusty.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob rowniez, gdy symbole operacji beda
+	 rozdzielone bialymi znakami.
+	 Stos bedzie tez wyczyszczony po tym, jak uzytkownik wybierze symbol
+	 'q'.
+	 
+Test 9.: Sprawdzenie przypadku dzielenia przez 0.
+
+     	 Wprowadzenie danych:
+	 ./a.out
+	 12 0 /
+
+	 Spodziewany efekt:
+	 Otrzymanie komunikatu o tym, ze nie mozna dzielic przez 0 i przerwanie
+	 dzialania programu.
+
+	 Otrzymany wynik:
+	 Nie mozna dzielic przez 0.
+
+	 Rezultat testu zgodny z przewidywaniami (dzialanie programu zostalo
+	 przerwane).
+	 
+Test 10.: Sprawdzenie usuniecia elementu znajdujacego sie na szczycie stosu,
+     	 gdy stos nie jest pusty - sprawdzenie funkcji pop.
+
+	 Wprowadzenie danych:
+	 ./a.out
+	 123 12 34 67 +fPf
+
+	 Spodziewany efekt:
+	 Wyswietlenie zawartosci stosu (trzy elementy), usuniecie elementu
+	 znajdujacego sie na szczycie stosu i ponowne wyswietlenie stosu (dwa
+	 elementy, poniewaz trzeci zostal usuniety).
+
+	 Otrzymany wynik:
+	 101
+	 12
+	 123
+	 12
+	 123
+
+	 Rezultat testu zgodny z przewidywaniami.  
+	 Program zadziala poprawnie dla innych kombinacji danych wejsciowych z
+	 operacja usuwania elementu ze szczytu, pod warunkiem poprawnosci
+	 asercji funkcji pop.
+
+Test 11.: Sprawdzenie wywolania operacji drukowania szczytu stosu, gdy stos
+     	 jest pusty.
+
+	 Wprowadzenie danych:
+	 ./a.out
+	 P
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o tym, ze nie mozna zdjac elementu z
+	 pustego stosu i ze nie mozna usunac nieistniejacego elementu.
+
+	 Otrzymany wynik:
+	 Blad asercji: funkcja pop.
+	 Nie da się zdjac elementu z pustego stosu.
+	 Operacja "P": Nie mozna usunac nieistniejacego elememtu.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w podobny sposob dla wywolania samej funkcji pop, gdy
+	 stos jest pusty (jedyna roznica polega na tym, ze ostatnia linia
+	 powyzsego komunikatu nie zostanie wyswietlona.
+
+Test 12.: Sprawdzenie wywolania operacji arytmetycznej, gdy stos jest pusty.
+
+     	 Wprowadzenie danych:
+	 ./a.out
+	 +
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o braku wymaganej ilosci argumentow na
+	 stosie.
+
+	 Otrzymany wynik:
+	 Blad asercji: funkcja operacja.
+	 Do operacji dodawania potrzebne sa dwa argumenty.
+	 Na stosie jest 0 argumentow.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Podobny komunikat pojawi sie, gdy na stosie bedzie tylko 1 argument.
+	 Wtedy ostatnim zdaniem komunikatu zamiast "Na stosie jest 0
+	 argumentow." bedzie "Na stosie jest 1 argument.".
+	 Ponadto dla odejmowania, mnozenia i dzielenia z niewlasciwa liczba
+	 argumentow pojawia sie komunikaty, w ktorych zamiast slowa "dodawania"
+	 bedzie slowo odpowiednie dla danej operacji.
+
+Test 13.: Sprawdzenie przypadku wpisania nieokrslonego przez program znaku.
+
+     	 Wprowadzenie danych:
+	 ./a.out
+	 1 2 w 4 5 f
+
+	 Spodziewany efekt:
+	 Nieznany znak zostanie zignorowany przez program. Program wykona sie
+	 jakby tego znaku nie bylo w strumieniu wejsciowym.
+
+	 Otrzymany wynik:
+	 5
+	 4
+	 2
+	 1
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala poprawnie dla innych kombinacji danych wejsciowych z
+	 nieznanymi znakami.
+
+Funkcja inicjuj byla wywolywana automatycznie na poczatku kazdego testu
+programu i nie wykazala bledu.
+
+Funkcja empty byla wywolywana automatycznie przez inne funkcje (np. zamiana,
+print) i nie wykazala bledu.
+
+Funkcja pop wykazala blad asercji w tescie 11. (operacji usuwania elementu ze
+stosu), poza tym przypadkiem byla wywolywana automatycznie przez inne funkcje
+(np. duplikuj, wyczysc) i dla tych wywolan nie wykazala bledow.
+
+Funkcja push byla wywolywana automatycznie przez inne funkcje (np. main,
+duplikuj) i nie wykazala bledow.
+
+Dlatego testy funkcji inicjuj, empty, pop i push nie sa potrzebne.
+
+W kazdym tescie program zostal zakonczony wyborem znaku 'q', o ile nie zostalo
+napisane inaczej.
+
+Wniosek: Program dziala poprawnie dla wszystkich przypadkow.

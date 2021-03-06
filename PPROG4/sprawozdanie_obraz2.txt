@@ -1,0 +1,404 @@
+Konrad Bialek
+Przetwarzanie obrazow 2
+28.01.2019r.
+
+Testy programu:
+
+Skladnia opcji wywolania programu 
+           program {[-i nazwa] [-o nazwa] [-p liczba] [-n] [-k] [-d] [-m]}
+
+Podczas wywolywania programu mozna korzystac z pretwarzania potokowego, ale
+kazde wywolanie poza ostatnim musi zapisywac obraz na stdout.
+
+Do testow wykorzystalem obrazy kubus.pgm (czarno-bialy) i kubus.ppm (kolorowy),
+poniewaz nie zajmuja duzo mijsca i beda szybko wyswietlane przez program
+"display". Program dziala tez dla innych obrazow.
+
+Funkcje negatyw, progowanie (dla prawidlowej wartosci progu), konturowanie i
+zapis dzialaja poprawnie w sposob opisany (ale bez ograniczenia do obrazow
+512x512 pikseli) w poprzednim sprawozdaniu mimo wprowadzonych zmian w kodzie
+programu. W przypadku podania nazwy istniejacego pliku jako pliku do zapisu
+plik ten zostanie zastapiony w sposob opisany w poprzednim sprawozdaniu.
+
+Test 1.: Sprawdzenie, czy program odczytuje poprawnie wskazane pliki
+     	 o odpowiednim formacie i zawartosci znajdujace sie w katalogu
+         z programem, zapisuje je w odpowiedni sposob zachowujac zawartosc
+	 (poza komentarzami), zmienia komentarze, wyswietla obrazy oraz konczy
+	 program.
+
+	 Wprowadzenie danych:
+	 ./a.out -i kubus.pgm -o q.pgm -d
+	 
+	 Spodziewany efekt:
+	 Program zapisze wskazany (po opcji "-i") plik z obrazem w odpowiednim
+	 formacie pod nowa nazwa (podana po opcji "-o") i wyswietli zapisany
+	 plik. Nowy plik bedzie roznic sie od pliku oryginalnego tylko
+	 komentarzami, w komentarzach zawierab bedzie informacje o oryginalnym
+	 pliku, wykonanych modyfikacjach (w tym przypadku braku modyfikacji) i
+	 nazwie tego pliku.
+
+	 Otrzymany wynik:
+	 Zapisanie nowego pliku w podany sposob i wyswietlenie zapisanego
+	 obrazu.
+
+ 	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob rowniez dla obrazow kolorowych
+	 (zapisze ze zmienionymi komentarzami i wyswietli obraz kolorwy).
+
+Test 2.: Sprawdzenie przypadku proby odczytu pliku, ktorego nie ma w katalogu
+     	 z programem lub ktory nie istnieje.
+
+ 	 Wprowadzenie danych:
+	 ./a.out -i costam.pgm -o q.pgm -d
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o braku uchwytu do pliku.
+
+	 Otrzymany wynik:
+	 Blad asercji: wywolanie programu - funkcja przetwarzaj_opcje.
+	 Nie podano uchwytu do pliku.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob rowniez dla nazw nieistniejacych
+	 plikow z innymi rozszerzeniami i bez rozszerzen.
+
+Test 3.: Sprawdzenie przypadku proby odczytu pliku bez "numeru magicznego".
+
+	 Zmiana (na czas testu) pierwszej linii pliku kubus.pgm na pusta linie.
+
+	 Wprowadzenie danych:
+	 ./a.out -i kubus.pgm
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledow asercji o tym, ze to nie jest plik PGM ani PPM i
+	 ze nie mozna zapisac obrazu, poniewaz nie zostal odczytany.
+
+	 Otrzymany wynik:
+	 Blad asercji: funkcja czytaj.
+	 To nie jest plik PGM ani PPM.
+	 Blad asercji: funkcja zapisz.
+	 Brak obrazu w pamieci. Najpierw odczytaj obraz.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob rowniez dla obrazow kolorowych.
+
+Test 4.: Sprawdzenie przypadku proby odczytu pliku bez podanych wymiarow lub
+     	 liczby stopni szarosci.
+
+	 Usuniecie (na czas testu) z pliku kubus.pgm prawie wszystkich liczb
+	 znajdujacych sie za linia komentarza - pozostawienie tam dwoch liczb.
+
+	 Wprowadzenie danych:
+	 ./a.out -i kubus.pgm
+
+	 Spodzieany efekt:
+	 Wyswietlenie bledow asercji o braku wymiarow obrazu lub liczby stopni
+	 koloru i ze nie mozna zapisac obrazu, poniewaz nie zostal odczytany.
+
+	 Otrzymany wynik:
+     	 Blad asercji: funkcja czytaj.
+     	 Brak wymiarow obrazu lub liczby stopni koloru.
+     	 Blad asercji: funkcja zapisz.
+     	 Brak obrazu w pamieci. Najpierw odczytaj obraz.
+     
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob rowniez dla obrazow kolorowych i dla
+	 pozostawienia jednej liczby za linia komentarza, braku liczb lub
+	 wpisania tam wartosci innych niz liczby (w dowolnej ilosci).
+
+Test 5.: Sprawdzenie przypadku proby odczytu pliku z niewlasciwymi wymiarami
+     	 obrazu.
+
+	 Usuniecie (na czas testu) z pliku kubus.pgm co najmniej jednej liczby
+	 z linii pliku odpowiadajacych pikselom obrazu.
+
+	 Wprowadzenie danych:
+	 ./a.out -i kubus.pgm
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledow asercji o niewlasciwych wymiarow obrazu i ze nie
+	 mozna zapisac obrazu, poniewaz nie zostal odczytany.
+
+	 Otrzymany wynik:
+	 Blad asercji: funkcja czytaj.
+	 Niewlasciwe wymiary obrazu
+	 Blad asercji: funkcja zapisz.
+	 Brak obrazu w pamieci. Najpierw odczytaj obraz
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob rowniez dla obrazow kolorowych i dla
+	 pozostawienia jednej liczby za linia komentarza, braku liczb lub
+	 wpisania tam wartosci innych niz liczby (w dowolnej ilosci). Pozostale
+	 bledy funkcji czytaj zostaly opisane w poprzednim sprawozdaniu.
+
+Test 6.: Sprawdzenie wywlania programu bez argumentow.
+
+     	 Wprowadzenie danych:
+	 ./a.out
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o niepodanej opcji "-i".
+
+ 	 Otrzymany wynik:
+	 Blad asercji: wywolanie programu - funkcja przetwarzaj_opcje.
+	 Nie podano opcji "-i".
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob dla wpisania po "./a.out" innych
+	 opcji niz "-i" lub czegos, co nie jest opcja.
+
+Test 7.: Sprawdzenie wywlania programu z argumentem "-i" bez nazwy pliku.
+
+     	 Wprowadzenie danych:
+	 ./a.out -i
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o braku nazwy pliku wejsciowego z obrazem.
+
+	 Otrzymany wynik:
+	 Blad asercji: wywolanie programu - funkcja przetwarzaj_opcje.
+	 Brak nazwy pliku wejsciowego z obrazem.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob dla wpisania po "./a.out" innych
+	 opcji niz "-i" lub czegos, co nie jest opcja.
+
+Test 8.: Sprawdzenie wywlania programu z argumentem "-i" bez nazwy istniejacego
+     	 pliku - z nazwa nieistniejacego pliku.
+
+	 Wprowadzenie danych:
+	 ./a.out -i erv -p
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o braku uchwytu do pliku.
+
+	 Otrzymany wynik:
+	 Blad asercji: wywolanie programu - funkcja przetwarzaj_opcje.
+	 Brak wartosci progu.
+
+	 Rezultat testu nie jest zgodny z przewidywaniami, poniewaz funkcja
+	 pretwarzaj_opcje zwrocila wartosc bledu braku wartosci progu.
+	 Program zadziala w spodziewany sposob (da spodziewany efekt) dla
+	 wpisania w miejsce "-p" innych opcji nie wymagajacych dodatkowych
+	 argumentow pod warunkiem spelnienia innych warunkow potrzebnych do ich
+	 wywolania.
+
+Test 9.: Sprawdzenie wywolania programu bez opcji "-o".
+
+     	 Wprowadzenie danych:
+	 ./a.out -i kubus.pgm
+
+	 Spodziewany efekt:
+	 Wypisanie zawartosci pliku (ze zmienionymi komentarzami) na ekranie
+	 terminala (stdout).
+
+	 Otrzymany wynik:
+	 Wypisanie zawartosci pliku (ze zmienionymi komentarzami) na ekranie
+	 terminala (stdout).
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob rowniez dla obrazow kolorowych.
+
+Test 10.: Sprawdzenie wywolania programu z opcja "-o" bez jej argumentu.
+         
+	 Wprowadzenie danych:
+	 ./a.out -i kubus.pgm -o
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o braku nazwy pliku wyjsciowego.
+
+	 Otrzymany wynik:
+	 Blad asercji: wywolanie programu - funkcja przetwarzaj_opcje.
+	 Brak nazwy pliku wyjsciowego.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob rowniez dla obrazow kolorowych.
+
+Test 11.: Sprawdzenie wywolania programu z ciagiem znakow nie bedacych opcja.
+     	 
+	 Wprowadzenie danych:
+	 ./a.out kubus.pgm
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledow asercji o tym, ze podany argument wywolania nie
+	 jest opcja i o braku opcji "-i".
+
+	 Otrzymany wynik:
+	 Blad asercji: wywolanie programu - funkcja przetwarzaj_opcje.
+	 To nie jest opcja.
+	 Nie podano opcji "-i".
+
+	 Rezultat testu zgodny z przewidywaniami.
+
+Test 12.: Sprawdzenie wywolania programu z opcja "-p" bez wartosci progu.
+
+     	 Wprowadzenie danych:
+	 ./a.out -i kubus.pgm -p -o q.pgm
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o braku wartosci progu.
+
+	 Otrzymany wynik:
+	 Blad asercji: wywolanie programu - funkcja przetwarzaj_opcje.
+	 Brak wartosci progu.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob rowniez dla obrazow kolorowych.
+
+Test 13.: Sprawdzenie proby wywolania konwersji dla obrazu PGM.
+
+     	 Wprowadzenie danych:
+	 ./a.out -i kubus.pgm -m -o q.pgm
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o tym, ze konwersje mozna wywolac tylko dla
+	 kolorowych obrazow, ale nie spowoduje to zatrzymania programu i obraz
+	 zostanie zapisany bez konwersji.
+
+	 Otrzymany wynik:
+	 Blad asercji: wywlanie programu.
+	 Konwersje mozna wywolac tylko dla kolorowych obrazow.
+	 Podczas przetwarzania pominieto konwersje.
+	 
+	 Rezultat testu zgodny z przewidywaniami.
+	 
+Test 14.: Sprawdzenie wywolania modyfikacji obrazu kolorowego i wyswietlenie
+         zapisanego obrazu.
+
+     	 Wprowadzenie danych:
+	 ./a.out -i kubus.ppm -n -o q.pgm -d
+
+	 Spodziewany efekt:
+	 Przeprowadzenie konwersji kolorowego obrazu do szarosci, wykonanie
+	 modyfikacji negatywu, zapisanie do nowego pliku i wyswietlenie obrazu
+	 z nowego pliku.
+
+	 Otrzymany efekt:
+	 Wyswietlony i zapisany obraz jest czarno-bialy i ma przeciwne
+	 wartosci odcieni szarsci niz kolorowy obraz oryginalny mial srednie
+	 warosci odcieni kolorow.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Funkcja konwersji do szarosci dziala prawidlowo.
+	 Program zadziala w podobny sposob rowniez dla innych modyfikacji
+	 (wynik programu bedzie odpowiedni dla kazdej modyfikacji i ich
+	 laczenia) i recznego wywolania konwersji (ktora zamieni tylko obraz z
+	 kolorowego na czarno-bialy).
+
+Test 15.: Sprawdzenie wywolania modyfikacji obrazu czarno-bialego i
+     	 wyswietlenie zapisanego obrazu.
+
+	 Wprowadzenie danych:
+	 ./a.out -i kubus.pgm -k -o q.pgm -d
+
+	 Spodziewany efekt:
+	 Wykonanie modyfikacji konturowania, zapisanie do nowego pliku i
+	 wyswietlenie obrazu z nowego pliku.
+
+	 Otrzymany wynik:
+	 Wyswietlony i zapisany obraz pokazuje kontury oryginalnego obrazka.
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w podobny sposob rowniez dla innych modyfikacji
+	 (wynik programu bedzie odpowiedni dla kazdej modyfikacji i ich
+	 laczenia).
+
+Test 16.: Sprawdzenie proby wyswietlenia obrazu zapisanego na ekranie terminala
+     	 (stdout).
+
+	 Wprowadzenie danych:
+	 ./a.out -i kubus.pgm -d
+
+	 Spodziewany efekt:
+	 Wypisanie obrazu na ekranie terminala i bledu asercji o niemozliwosci
+	 wyswietlenia niezapisanego lub zapisanego na stdout obrazu.
+
+	 Otrzymany wynik:
+	 Wypisanie pliku na ekranie terminala.
+
+	 Blad asercji: wywolanie programu.
+	 Nie mozna wyswietlic niezapisanego lub zapisanego na stdout obrazu.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob dla obrazow kolorowych i po
+	 dopisaniu do wywolania "-o -".
+
+Test 17.: Sprawdzenie przypadku wprowadzenia niewlasciwej wartosci progu.
+
+         Wprowadzenie danych:
+	 ./a.out -i kubus.pgm -p 120 -o q.pgm
+
+	 Spodziewany efekt:
+	 Wyswietlenie bledu asercji o niewlasciwej wartosci progu.
+	 
+	 Otrzymany wynik:
+	 Blad asercji: funkcja progowanie.
+	 Niewlasciwa wartosc progu - spoza przedzialu od 0 do 100.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob dla obrazow kolorowych.
+
+Test 18.: Sprawdzenie przypadku odczytu z kilku roznych plikow.
+
+     	 Wprowadzenie danych:
+	 ./a.out -i kubus.pgm -i kubus.ppm -o q.pgm -d
+
+	 Spodziewany efekt:
+	 Zapisanie i wyswietlenie obrazu, ktory zostal wczytany jako ostatni.
+
+	 Otrzymany wynik:
+	 Zapisanie i wyswietlenie obrazu kolorowego (wczytanego jako kubus.ppm)
+	 mimo zapisania z rozszerzeniem .pgm.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob w innej kolejnosci wczytywania i
+	 wtedy zapisze i wyswietli obraz czarno-bialy.
+
+Test 19.: Sprawdzenie przypadku zapisu do kilku roznych plikow.
+
+     	 Wprowadzanie danych:
+	 ./a.out -i kubus.pgm -o q.pgm -o w.pgm -d
+
+	 Spodziewany efekt:
+	 Stworzenie pustego pierwszego pliku, zapisanie obrazu z odpowiednimi
+	 komenarzami do drugiego pliku i wyswietlenie obrazu z drugiego pliku.
+
+	 Otrzymany wynik:
+	 Stworzenie pustego pliku q.pgm, zapisanie obrazu z odpowiednimi
+	 komenarzami do pliku w.pgm i wyswietlenie obrazu z pliku w.pgm.
+	 
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob rowniez dla obrazow kolorowych.
+
+Test 20.: Sprawdzenie przypadku wywolywania programu w potokach i wczytywania
+     	 obrazu z stdin.
+
+     	 Wprowadzanie danych:
+	 ./a.out -i kubus.ppm -p 50 -o -|./a.out -i - -n -o -| ./a.out -i - -k -o q.pgm -d
+
+	 Spodziewany efekt:
+	 Wykonanie modyfikacji na obrazie w podanej kolejnosci, zapisanie go do
+	 podanego pliku ze zmienionymi komentarzami (zostanie zapisane "-" jako
+	 nazwa oryginalnego pliku i "konturowanie;" jako modyfikacje, poniewaz
+	 tylko to zostalo zapamietane w tym potoku) i wyswietlenie zapisanego
+	 obrazu.
+
+	 Otrzymany wynik:
+	 Zapisanie obrazu do pliku w wyzej opisany sposob i wyswietlenie tego
+	 obrazu.
+
+	 Rezultat testu zgodny z przewidywaniami.
+	 Program zadziala w opisany sposob rowniez dla obrazow czarno-bialych.
+
+Wywolanie z modyfikacjami w jednym potoku np.
+"./a.out -i kubus.ppm -p -50 -n -k -o.pgm -d" moze nie dac wymaganych efektow,
+poniewaz kolejnosc modyfikacji (i wszystkich funkcji) w kodzie programu jest
+okreslona (czytaj-konwersja-negatyw-progowanie-konturowanie-zapisz-wyswietl) i
+w takiej kolejnosci funkcje zostana wywolane w jednym potoku (pod warunkiem
+spelnienia warunkow wywolania kazdej z nich).
+
+Wniosek: Program dziala poprawnie dla wszystkich przypadkow poza przypadkiem
+	 opisanym w tescie 8. Jest to zwiazane z budowa funkcji
+	 przetwarzaj_opcje, ktora po wykryciu bledu braku wartosci progu zwraca
+	 odpowiednia wartosc i nie sprawdza, czy dany plik istnieje.
+	 Niespodziewany wynik wynika tylko z mojej nieuwagi podczas
+	 przewidywania wyniku. Sam program zachowal sie prawidlowo.

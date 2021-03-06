@@ -1,0 +1,135 @@
+Konrad Bialek
+Praca z interpreterem polecen
+20.12.2018r.
+
+1. Polecenie tworzace alias lhs: alias lhs='du -hd 1|sort -h'
+
+   Wyswietla posortowane wedlug wielkosci bezposrednie podkatalogi biezacego
+   katalogu (z katalogami rozpoczynajacymi sie znakiem '.' wlacznie),
+   z podaniem tej wielkosci w formacie czytelnym dla czlowieka.
+   
+   Polecenie "du -hd 1|sort -h" (i jego stworzony alias) zadziała tylko na
+   komputerze panamint.
+   
+   Polecenie "du" szacuje użycie miejsca na dysku przez katalogi
+   (wypisywane rekurencyjnie). Po dopisaniu "-h" przedstawia wyniki w formacie
+   czytelnym dla człowieka (np. K-kilobajt), po dodaniu "-d" (z argumentem -
+   liczba naturalna) ogranicza wyswietlanie wynikow do podkatalogow tyle
+   poziomow nizej na ile wskazuje liczba (w przypadku "-d 1" wyswietla tylko
+   bezposrednie podkatalogi biezacego katalogu).
+
+   Polecenie "sort" sortuje wiersze plikow (jezeli nie podano nazwy pliku
+   sortuje standardowe wejscie). Po dopisaniu "-h" porównuje liczby w formacie
+   czytelnym dla ludzi (np. K-kilobajt).
+   
+   Przyklady uzytecznosci:
+   Polecenie "du -hd 1|sort -h" bedzie przydatne, gdy trzeba znalezc
+   katalogi, ktore zajmuja najwiecej miejsca w biezacym katalogu, zwolnic duzo
+   miejsca w pamieci lub szukajac niepotrzebnych danych do usuniecia, ktore
+   zajmuja duzo miejsca.
+   Polecenie alias tworzace aliasy bedzie przydatne, gdy uzytkownik czesto
+   korzysta z dlugich lub skomplikowanych polecen.
+
+   Jezeli polecenie "du -hd 1|sort -h" ma nie uwzgledniac niektorych katalogow
+   (np. rozpoczynajacych sie znakiem '.' nalezy napisac
+   "du -hd 1 --exclude='./.*'|sort -h", ale wtedy pominiete katalogi nie
+   zostana uwzglednione przy okreslaniu miejsca zajmowanego przez katalog
+   glowny.
+
+2. Polecenie usuwajace pliki pasujace do podanego wzorca z bierzacego katalogu
+   i jego podkatalogow:
+   find . \( -name "*~" -o -name "#*#" \) -type f -exec rm '{}' \;
+
+   Polecenie "find" szuka plików w hierarchii katalogowej. Znak '.' okresla
+   w ktorym katalogu ma szukac plikow. Po dopisaniu "-name" (z argumentem -
+   wzorcem nazwy zapisanym w cudzyslowie) szuka plikow o nazwie okreslanej
+   przez wzorzec. Po dodaniu "-o" (alternatywa, lub) sprawdza osobno grupy
+   opcji rozdzielanych przez "-o", dlatego najlepiej zamknac alternatywe
+   (z opcjami, ktore ma rozdzielac) w nawiasach "\(" i "\)". Po dodaniu "-type"
+   (z argumentem okreslajacym typ pliku) szuka plikow okreslonego typu
+   (w przypadku "-type f" wyswietla tylko zwykle pliki). Po dopisaniu "-exec"
+   (z argumentem - poleceniem do wykonania zakonczonym "\;") dla znalezionych
+   plikow wykonuje polecenie podane po "-exec" (w przypadku "rm '{}' \;" usuwa
+   znalezione pliki - "'{}'" oznacza nazwe pliku).
+
+   Przyklady uzytecznosci:
+   Polecenie "find . \( -name "*~" -o -name "#*#" \) -type f -exec rm '{}' \;"
+   bedzie przydatne, gdy trzeba usunac duzo niepotrzebnych plikow tworzonych
+   automatycznie przez program lub gdy trzeba usunac duzo plikow utworzonych za
+   pomoca petli.
+   
+3. Polecenie zmieniajace rozszerzenia plikom w formacie JPEG/PNG z katalogu
+   biezacego na pisane malymi literami:
+   for i in *.JPEG; do mv $i ${i%.JPEG}.jpeg; done; for i in *.PNG; do mv $i ${i%.PNG}.png; done
+   
+   (Zapisane w formie skryptu nazwa.sh:
+
+   #!/bin/bash
+   
+   # skrypt zmieniajacy rozszerzenia plikom w formacie JPEG/PNG z katalogu
+   # biezacego na pisane malymi literami
+   
+   # dla plikow w formacie JPEG
+   for i in *.JPEG; do mv $i ${i%.JPEG}.jpeg; done
+   
+   # dla plikow w formacie PNG
+   for i in *.PNG; do mv $i ${i%.PNG}.png; done
+
+
+   wywolywanego poleceniem "./nazwa.sh", plik nazwa.sh musi byc wykonywalny.
+
+   )
+
+   Polecenie zlozone z dwoch petli for dla kazdego z rozszerzen .JPEG i .PNG,
+   ktore kazdemu z plikow (ktorych nazwa jest oznaczona litera 'i')
+   z rozszerzeniem .JPEG lub .PNG zmienia rozszerzenie za pomoca polecenia "mv"
+   (poprzedzonego przez polecenie "do", przed ktorym jest srednik konczacy
+   deklaracje petli) z argumentami: "$i" oznaczajacym oryginalna nazwe pliku i
+   "${i%.JPEG}.jpeg" dla plikow z rozszerzeniem .JPEG lub "${i%.PNG}.png" dla
+   plikow z rozszerzeniem .PNG, ktore oznacza zamiane rozszerzenia pisanego
+   duzymi literami na pisane malymi literami (znak '%' oznacza usuniecie
+   fragmentu znajdujacego sie za nim z nazwy 'i', a nawiasy klamrowe zamykaja
+   dzialanie znaku '%', zeby usunal tylko poprzednie rozszerzenie i pozwalaja
+   na dopisanie nowego rozszerzenia. Polecenie "mv" z argumentami jest
+   zakonczone srednikiem, po ktorym jest polecenie "done" konczace petle for.
+   Obie petle for w poleceniu sa rozdzielone srednikiem.
+
+   Przyklady uzytecznosci:
+   Polecenie "for i in *.JPEG; do mv $i ${i%.JPEG}.jpeg; done; for i in *.PNG; do mv $i ${i%.PNG}.png; done"
+   bedzie przydatne, gdy trzeba zmienic rozszerzenia duzej liczby plikow
+   w podanym formacie na inne rozszerzenia, bo oryginalne pliki zostaly
+   stworzone lub zapisane kazdy z takim samym bledem lub gdy zmiana
+   rozszerzenia na odpowiednie jest wymagana przez zewnetrzny program.
+   
+4. Polecenie "locale" wywolane bez argumentow wyswietla informacje
+   o ustawieniach lokalnych konta dotyczacych miedzy innymi jezyka kodowania,
+   jezyka z jakim komputer komunikuje sie z uzytkownikiem (i jego programy
+   miedzy soba), systemu numerycznego, czasu i systemu monetarnego.
+
+   Spis ustawien lokalnych ma wiecej elementow na komputerze panamint niz na
+   komputerze diablo (diablo nie ma ustawien np. adresu i telefonu, ktore sa na
+   panamincie).
+
+   Na komputerze panamint ustawienia jezyka angielskiego ma tylko
+   "LANGUAGE" (LANGUAGE=en_US:en) i nie mozna tego zmienic tak jak wiekszosci
+   pozostalych ustawien z jezyka polskiego i kodowania UTF-8 (pl_PL.UTF-8).
+   Zmienic mozna tylko ustawienia LANG i te ustawienia, ktore sa zapisane
+   w cudzyslowie ("LC_CTYPE", "LC_COLLATE", "LC_MESSAGES") za pomoca polecenia
+   "export LANG=", gdzie po zanaku '=' bez odstepu nalezy wpisac nowe
+   ustawienie. System locale wyswietli informacje o bledach dotyczacych trzech
+   zmienianych ustawien (bez "LANG") (jezeli wpisano cos innego niz jezyk
+   kodowania) o tym, ze nie moga zostac ustawione do wartosci domyslnych. Po
+   wpisaniu komendy "export LANG=pl_PL.UTF-8" zmienione ustawienia zostaja
+   przywrocone do polskiego jezyka kodowania.
+
+   Na diablo nie ma ustawienia "LANGUAGE" i wszystkie ustawienia sa ustawione
+   na polski jezyk kodowania. Po wpisaniu polecenia "export LANG=", gdzie po
+   znaku "=" bez odstepu zostanie wpisane cos innego niz nazwa jezyka kodowania
+   (np. en) ustawienie "LANG" zostanie zmienione na wpisana wartosc,
+   a pozostale ustawienia bez "LC_ALL" zostana zmienione na "C". Po wpisaniu
+   "export LANG=pl" ustawienie "LANG" bedzie mialo wartosc pl, a ustawienia
+   "LC_CTYPE", "LC_COLLATE" i "LC_MESSAGES" beda mialy wartosc "pl". Pozostale
+   ustawienia bez "LC_ALL" zmienia sie na pl_PL.UTF-8 . Po wpisaniu
+   "export LANG=pl_PL.UTF-8" wszystkie ustawienia poza "LC_ALL" beda mialy
+   wartosc pl_PL.UTF-8, a ustawienia "LC_CTYPE", "LC_COLLATE" i "LC_MESSAGES"
+   beda mialy ta wartosc w cudzyslowie.

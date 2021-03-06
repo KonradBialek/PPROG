@@ -1,0 +1,71 @@
+Konrad Bialek
+Przeciecia zera
+08.11.2018r.
+
+Zakladam, ze pomijanie liczb spoza przedzialu od -10 do 10 i liczby 99 ma
+polegac na pomijaniu tylko ich wartosci (czyli ich wplywu na czestotliwosc),
+a nalezy brac pod uwage fakt wykonania pomiaru i wliczac te liczby do grup
+zlozonych z 99 liczb. W zwiazku z tym nawias zamykajacy warunek z linii 27
+znajduje sie w linii 34 zamiast w linii 51 (ktora odpowiada drugiej,
+niezalozonej przeze mnie mozliwosci).
+
+Sytuacje, w ktorych miedzy wartosciami roznymi od zera znajduje sie jedno lub
+wiecej zer traktuje jako przeciecie, tylko jezeli wartosci rozne od zera sa
+przeciwnych znakow (zgodnie z trescia zadania fakt wystepowania zer nie wplywa
+na liczenie przeciec).
+
+Zgodnie z trescia zadania odpowiedni komunikat ma pojawiac sie tylko, gdy
+wystapi nieprawidlowa czestotliwosc, a w pozostałych przypadkach nie zostanie
+wygenerowany zaden komunikat. 
+Zakladam, ze w programie studinfo w formularzu oceny "Komunikat i wyzerowanie
+przeciec po kazdej grupie 99 liczb" oznacza, ze po kazdej grupie ma nastapic
+wyzerowanie przeciec, a "po kazdej grupie 99 liczb" nie odnosi sie do
+komunikatu. W przypadku otrzymania poprawnej czestotliwosci zostanie
+wyswietlona jedynie jej wartosc i numer grupy.
+
+Informacja o niepelnej grupie (jezeli taka grupa wystapi) nie zostanie
+wyswietlona, poniewaz tresc zadania nie pozwala na okreslenie czestotliwosci
+w niepelnej grupie liczb.
+
+Podczas testowania programu korzystalem z przetwarzania potokowego:
+cut -d ' ' -f 2- plik | ./a.out
+
+Test 1.: Sprawdzenie dzialania programu dla pliku przeciecia_zera1.txt.
+     	 Wprowadzenie danych: cut -d ' ' -f 2- przeciecia_zera1.txt | ./a.out
+	 Spodziewany efekt: Otrzymanie wartosci poprawnych czestotliwosci oraz
+	 komunikatu, gdy wystapi niewlasciwa czestotliwosc.
+	 Otrzymany wynik:
+	 1. 11
+	 Grupa 2. Nieprawidlowa czestotliwosc: 5
+	 3. 10
+	 4. 12
+	 5. 12
+	 6. 12
+	 7. 12
+	 8. 13
+	 Grupa 9. Nieprawidlowa czestotliwosc: 18
+	 10. 11
+	 Rezultat testu zgodny z przewidywaniami.
+
+Test 2.: Sprawdzenie dzialania programu dla pliku przeciecia_zera2.txt.
+     	 Wprowadzenie danych: cut -d ' ' -f 2- przeciecia_zera2.txt | ./a.out
+	 Spodziewany efekt: Otrzymanie wartosci poprawnych czestotliwosci oraz
+	 komunikatu, gdy wystapi niewlasciwa czestotliwosc.
+	 Otrzymany wynik:
+	 1. 11
+	 Grupa 2. Nieprawidlowa czestotliwosc: 5
+	 3. 10
+	 4. 12
+	 5. 12
+	 6. 12
+	 7. 12
+	 8. 13
+	 Grupa 9. Nieprawidlowa czestotliwosc: 18
+	 10. 11
+	 Rezultat testu zgodny z przewidywaniami.
+
+Oba wykonane testy sprawdzaja zachowanie programu w sytuacjach z jednym lub
+wiecej zer, nieprawidlowymi czestotliwosciami i wartosciami spoza przyjetego
+zakresu, czyli sprawdzaja wszystkie mozliwosci.
+
+Wniosek: Program dzala poprawnie dla wszystkich przypadkow.
